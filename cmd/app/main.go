@@ -1,8 +1,8 @@
 package main
 
 import (
+	"backupergo/internal/config"
 	"bufio"
-	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -13,19 +13,6 @@ type Config struct {
 	MysqlPath string `json:"mysqlPath"`
 	DBQuery   string `json:"dbQuery"`
 	DBName    string `json:"dbName"`
-}
-
-func loadConfig(path string) (Config, error) {
-	var config Config
-	file, err := os.ReadFile(path)
-	if err != nil {
-		return config, err
-	}
-	err = json.Unmarshal(file, &config)
-	if err != nil {
-		return config, err
-	}
-	return config, nil
 }
 
 func getPathsFromCommand(config Config) ([]string, error) {
@@ -93,14 +80,14 @@ func main() {
 	pathsFile := "paths.txt"           // Путь к файлу, в который записываются пути
 
 	// Загрузка конфигурации
-	config, err := loadConfig(configPath)
+	config, err := config.LoadConfig(configPath)
 	if err != nil {
 		fmt.Println("Error loading config:", err)
 		return
 	}
 
 	// Получение новых путей
-	newPaths, err := getPathsFromCommand(config)
+	newPaths, err := getPathsFromCommand(Config(config))
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
