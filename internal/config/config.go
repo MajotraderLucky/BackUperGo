@@ -10,6 +10,7 @@ type Config struct {
 	DBQuery   string `json:"dbQuery"`
 	DBName    string `json:"dbName"`
 	PathsFile string `json:"pathsFile"`
+	BackUpDir string `json:"backupDir"`
 }
 
 func LoadConfig(path string) (Config, error) {
