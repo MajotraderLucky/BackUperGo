@@ -29,3 +29,17 @@ func FilterAndCleanDirectories(dirPath string, validPaths map[string]bool) error
 	}
 	return nil
 }
+
+// EnsureDirectoriesExist проверяет наличие и создает директории, если они отсутствуют.
+func EnsureDirectoriesExist(dirPath string, validPaths map[string]bool) error {
+	for dirName := range validPaths {
+		fullPath := filepath.Join(dirPath, dirName)
+		if _, err := os.Stat(fullPath); os.IsNotExist(err) {
+			if err := os.Mkdir(fullPath, 0755); err != nil {
+				return fmt.Errorf("failed to create directory %s: %v", fullPath, err)
+			}
+			fmt.Printf("Created directory: %s\n", fullPath)
+		}
+	}
+	return nil
+}
