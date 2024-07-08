@@ -2,33 +2,11 @@ package main
 
 import (
 	"backupergo/internal/config"
+	"backupergo/internal/filemanager"
 	"fmt"
 	"os"
 	"path/filepath"
 )
-
-func filterAndCleanDirectories(dirPath string, validPaths map[string]bool) error {
-	files, err := os.ReadDir(dirPath)
-	if err != nil {
-		return err
-	}
-
-	for _, file := range files {
-		if file.IsDir() {
-			dirName := file.Name()
-			if !validPaths[dirName] && dirName != "web" && dirName != "mysql" {
-				err := os.RemoveAll(filepath.Join(dirPath, dirName))
-				if err != nil {
-					return fmt.Errorf("failed to remove directory %s: %v", dirName, err)
-				}
-				fmt.Printf("Removed directory: %s\n", dirName)
-			} else {
-				fmt.Printf("Kept directory: %s\n", dirName)
-			}
-		}
-	}
-	return nil
-}
 
 func ensureDirectoriesExist(dirPath string, validPaths map[string]bool) error {
 	for dirName := range validPaths {
@@ -59,7 +37,7 @@ func main() {
 		return
 	}
 
-	err = filterAndCleanDirectories(backupDir, validPaths)
+	err = filemanager.FilterAndCleanDirectories(backupDir, validPaths)
 	if err != nil {
 		fmt.Printf("Failed to filter and clean directories: %v\n", err)
 		return
