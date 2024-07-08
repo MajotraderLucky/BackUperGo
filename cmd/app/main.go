@@ -89,8 +89,8 @@ func updatePathsFile(filePath string, newPaths []string) error {
 }
 
 func main() {
-	configPath := "./config/config.json" // Путь к файлу конфигурации
-	pathsFile := "paths.txt"             // Путь к файлу, в который записываются пути
+	configPath := "config/config.json" // Путь к файлу конфигурации
+	pathsFile := "paths.txt"           // Путь к файлу, в который записываются пути
 
 	// Загрузка конфигурации
 	config, err := loadConfig(configPath)
