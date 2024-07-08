@@ -4,16 +4,9 @@ import (
 	"backupergo/internal/config"
 	"backupergo/internal/executor"
 	"backupergo/internal/filemanager"
+	"backupergo/internal/util"
 	"fmt"
 )
-
-func convertConfig(src config.Config) config.Config {
-	return config.Config{
-		MysqlPath: src.MysqlPath,
-		DBQuery:   src.DBQuery,
-		DBName:    src.DBName,
-	}
-}
 
 func main() {
 	configPath := "config/config.json"
@@ -25,7 +18,7 @@ func main() {
 		return
 	}
 
-	executorCfg := convertConfig(cfg)
+	executorCfg := util.ConvertConfig(cfg)
 	newPaths, err := executor.GetPathsFromCommand(executorCfg)
 	if err != nil {
 		fmt.Println("Error:", err)
