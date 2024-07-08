@@ -2,29 +2,10 @@ package main
 
 import (
 	"backupergo/internal/config"
-	"bufio"
 	"fmt"
 	"os"
 	"path/filepath"
 )
-
-func loadPaths(filePath string) (map[string]bool, error) {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	paths := make(map[string]bool)
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		path := scanner.Text()
-		base := filepath.Base(path)
-		paths[base] = true
-	}
-
-	return paths, scanner.Err()
-}
 
 func filterAndCleanDirectories(dirPath string, validPaths map[string]bool) error {
 	files, err := os.ReadDir(dirPath)
@@ -72,7 +53,7 @@ func main() {
 	pathsFile := cfg.PathsFile
 	backupDir := cfg.BackUpDir
 
-	validPaths, err := loadPaths(pathsFile)
+	validPaths, err := config.LoadPaths(pathsFile)
 	if err != nil {
 		fmt.Printf("Failed to load paths: %v\n", err)
 		return
