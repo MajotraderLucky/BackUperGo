@@ -2,26 +2,24 @@ package main
 
 import (
 	"backupergo/internal/config"
-	"backupergo/internal/executor"
 	"backupergo/internal/filemanager"
-	"backupergo/internal/util"
+	"backupergo/internal/service"
 	"fmt"
 )
 
 func main() {
 	configPath := "config/config.json"
-	pathsFile := "paths.txt"
 
 	cfg, err := config.LoadConfig(configPath)
 	if err != nil {
-		fmt.Println("Error loading config:", err)
+		fmt.Printf("Error loading config: %v\n", err)
 		return
 	}
 
-	executorCfg := util.ConvertConfig(cfg)
-	newPaths, err := executor.GetPathsFromCommand(executorCfg)
+	pathsFile := cfg.PathsFile
+	newPaths, err := service.LoadAndProcessPaths(configPath)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Println(err)
 		return
 	}
 

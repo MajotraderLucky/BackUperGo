@@ -9,6 +9,7 @@ type Config struct {
 	MysqlPath string `json:"mysqlPath"`
 	DBQuery   string `json:"dbQuery"`
 	DBName    string `json:"dbName"`
+	PathsFile string `json:"pathsFile"`
 }
 
 func LoadConfig(path string) (Config, error) {
