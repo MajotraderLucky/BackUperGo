@@ -7,27 +7,32 @@ import (
 	"fmt"
 )
 
-func main() {
-	configPath := "config/config.json"
-
+// processPaths обрабатывает пути, загружая конфигурацию, обрабатывая новые пути и обновляя файл.
+func processPaths(configPath string) error {
 	cfg, err := config.LoadConfig(configPath)
 	if err != nil {
-		fmt.Printf("Error loading config: %v\n", err)
-		return
+		return fmt.Errorf("error loading config: %v", err)
 	}
 
 	pathsFile := cfg.PathsFile
 	newPaths, err := service.LoadAndProcessPaths(configPath)
 	if err != nil {
-		fmt.Println(err)
-		return
+		return fmt.Errorf("error processing paths: %v", err)
 	}
 
 	err = filemanager.UpdatePathsFile(pathsFile, newPaths)
 	if err != nil {
-		fmt.Println("Error:", err)
-		return
+		return fmt.Errorf("error updating paths file: %v", err)
 	}
 
 	fmt.Println("Paths file has been updated successfully.")
+	return nil
+}
+
+func main() {
+	configPath := "config/config.json"
+
+	if err := processPaths(configPath); err != nil {
+		fmt.Println(err)
+	}
 }
